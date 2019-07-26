@@ -320,8 +320,7 @@
 
   <entry id="ROF_NCPL">
     <type>integer</type>
-    <!-- TODO: (mvertens, 2019-02-02): for now are setting the rof couping frequency to the atm coupling frequency -->
-    <default_value>$ATM_NCPL</default_value>
+    <default_value>8</default_value>
     <values match="last">
       <value compset="_DATM.*_POP2.*_DROF">$ATM_NCPL</value>
       <value compset="_DATM.*_DOCN%SOM">$ATM_NCPL</value>
@@ -329,6 +328,8 @@
       <value compset="_DATM%CPLHIST.+POP\d">8</value>
       <value compset="_XATM.*_XLND.*_XICE.*_XOCN">$ATM_NCPL</value>
       <value compset="_DLND.*_CISM\d">1</value>
+      <value compset="_SROF">$ATM_NCPL</value>
+      <value compset="_XROF">$ATM_NCPL</value>
     </values>
     <group>run_coupling</group>
     <file>env_run.xml</file>
@@ -346,7 +347,6 @@
     This is used to set the driver namelist wav_cpl_dt, equal to basedt/WAV_NCPL
     where basedt is equal to NCPL_BASE_PERIOD in seconds.</desc>
   </entry>
-
 
   <!-- Logic for CPL_ALBAV should be reworked to depend on datm forcing rather
        than compset: see https://github.com/ESMCI/cime/issues/120 -->

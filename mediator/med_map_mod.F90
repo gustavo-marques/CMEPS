@@ -1016,47 +1016,46 @@ contains
     ! the destination field bundle accordingly
     !-------------------------------------------------
 
+    ! create a new temporary field bundle, FBSrcTmp that will contain field data on the source grid
+    if (.not. ESMF_FieldBundleIsCreated(FBSrcTmp)) then
+       call FB_init(FBSrcTmp, flds_scalar_name, &
+            FBgeom=FBSrc, fieldNameList=(/'data_srctmp'/), name='data_srctmp', rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
+    end if
+
+    ! create a temporary field bundle that will contain normalization on the source grid
+    if (.not. ESMF_FieldBundleIsCreated(FBNormSrc)) then
+       call FB_init(FBout=FBNormSrc, flds_scalar_name=flds_scalar_name, &
+            FBgeom=FBSrc, fieldNameList=(/trim(mapnorm)/), name='normsrc', rc=rc)
+       if (chkerr(rc,__line__,u_file_u)) return
+    endif
+
+    ! create a temporary field bundle that will contain normalization on the destination grid
+    if (.not. ESMF_FieldBundleIsCreated(FBNormDst)) then
+       call FB_init(FBout=FBNormDst, flds_scalar_name=flds_scalar_name, &
+            FBgeom=FBDst, fieldNameList=(/trim(mapnorm)/), name='normdst', rc=rc)
+       if (chkerr(rc,__line__,u_file_u)) return
+    endif
+
     call FB_reset(FBDst, value=czero, rc=rc)
     if (chkerr(rc,__LINE__,u_FILE_u)) return
 
     do n = 1,size(fldnames)
 
-       ! get pointer to source field data in FBSrc
+       ! Pointers to input field bunds
        call FB_GetFldPtr(FBSrc, trim(fldnames(n)), data_src, rc=rc)
        if (chkerr(rc,__LINE__,u_FILE_u)) return
+       call FB_GetFldPtr(FBFrac, trim(mapnorm), data_frac, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
 
-       ! create a new temporary field bundle, FBSrcTmp that will contain field data on the source grid
-       if (.not. ESMF_FieldBundleIsCreated(FBSrcTmp)) then
-          call FB_init(FBSrcTmp, flds_scalar_name, &
-               FBgeom=FBSrc, fieldNameList=(/'data_srctmp'/), name='data_srctmp', rc=rc)
-          if (chkerr(rc,__LINE__,u_FILE_u)) return
-
-          call FB_GetFldPtr(FBSrcTmp, 'data_srctmp', data_srctmp, rc=rc)
-          if (chkerr(rc,__LINE__,u_FILE_u)) return
-       end if
-
-       ! create a temporary field bundle that will contain normalization on the source grid
-       if (.not. ESMF_FieldBundleIsCreated(FBNormSrc)) then
-          call FB_init(FBout=FBNormSrc, flds_scalar_name=flds_scalar_name, &
-               FBgeom=FBSrc, fieldNameList=(/trim(mapnorm)/), name='normsrc', rc=rc)
-          if (chkerr(rc,__line__,u_file_u)) return
-
-          call FB_GetFldPtr(FBNormSrc, trim(mapnorm), data_srcnorm, rc=rc)
-          if (chkerr(rc,__LINE__,u_FILE_u)) return
-       endif
+       ! Pointers to data in temporary field bunldes
+       call FB_GetFldPtr(FBNormSrc, trim(mapnorm), data_srcnorm, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
+       call FB_GetFldPtr(FBSrcTmp, 'data_srctmp', data_srctmp, rc=rc)
+       if (chkerr(rc,__LINE__,u_FILE_u)) return
 
        call FB_reset(FBNormSrc, value=czero, rc=rc)
        if (chkerr(rc,__line__,u_file_u)) return
-
-       ! create a temporary field bundle that will contain normalization on the destination grid
-       if (.not. ESMF_FieldBundleIsCreated(FBNormDst)) then
-          call FB_init(FBout=FBNormDst, flds_scalar_name=flds_scalar_name, &
-               FBgeom=FBDst, fieldNameList=(/trim(mapnorm)/), name='normdst', rc=rc)
-          if (chkerr(rc,__line__,u_file_u)) return
-
-          call FB_GetFldPtr(FBFrac, trim(mapnorm), data_frac, rc=rc)
-          if (chkerr(rc,__LINE__,u_FILE_u)) return
-       endif
 
        call FB_reset(FBNormDst, value=czero, rc=rc)
        if (chkerr(rc,__line__,u_file_u)) return
