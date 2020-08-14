@@ -8,7 +8,7 @@ module med_map_mod
   use esmFlds               , only : mapunset, mapnames, nmappers
   use esmFlds               , only : mapnstod, mapnstod_consd, mapnstod_consf
   use esmFlds               , only : ncomps, compatm, compice, compocn, compname
-  use esmFlds               , only : mapfcopy, mapconsd, mapconsf, mapnstod
+  use esmFlds               , only : mapfcopy, mapconsd, mapconsf, mapnstod, mapcons2nd
   use esmFlds               , only : mapuv_with_cart3d
   use esmFlds               , only : med_fldList_entry_type
   use esmFlds               , only : fldListFr, fldListTo
@@ -98,7 +98,7 @@ contains
     use ESMF  , only : ESMF_GridCompGet, ESMF_VMGet, ESMF_FieldSMMStore
     use ESMF  , only : ESMF_FieldRedistStore, ESMF_FieldRegridStore, ESMF_REGRIDMETHOD_BILINEAR
     use ESMF  , only : ESMF_UNMAPPEDACTION_IGNORE, ESMF_REGRIDMETHOD_CONSERVE, ESMF_NORMTYPE_FRACAREA
-    use ESMF  , only : ESMF_REGRIDMETHOD_NEAREST_STOD
+    use ESMF  , only : ESMF_REGRIDMETHOD_NEAREST_STOD, ESMF_REGRIDMETHOD_CONSERVE_2ND
     use ESMF  , only : ESMF_NORMTYPE_DSTAREA, ESMF_REGRIDMETHOD_PATCH, ESMF_RouteHandlePrint
     use NUOPC , only : NUOPC_Write
 
@@ -299,6 +299,17 @@ contains
                                  factorList=factorList, &
                                  ignoreDegenerate=.true., &
                                  unmappedaction=ESMF_UNMAPPEDACTION_IGNORE, rc=rc)
+                         else if (mapindex == mapcons2nd) then
+                            call ESMF_FieldRegridStore(fldsrc, flddst, &
+                                 routehandle=is_local%wrap%RH(n1,n2,mapindex), &
+                                 srcMaskValues=(/srcMaskValue/), &
+                                 dstMaskValues=(/dstMaskValue/), &
+                                 regridmethod=ESMF_REGRIDMETHOD_CONSERVE_2ND, &
+                                 polemethod=polemethod, &
+                                 srcTermProcessing=srcTermProcessing_Value, &
+                                 factorList=factorList, &
+                                 ignoreDegenerate=.true., &
+                                 unmappedaction=ESMF_UNMAPPEDACTION_IGNORE, rc=rc)
                          end if
                          ! consd_nstod method requires a second routehandle
                          if ((mapindex == mapnstod .or. mapindex == mapnstod_consd .or. mapindex == mapnstod_consf) .and. &
@@ -350,7 +361,7 @@ contains
 
   end subroutine med_map_RouteHandles_init
 
-!================================================================================                   
+!================================================================================
 
   logical function med_map_RH_is_created_RH3d(RHs,n1,n2,mapindex,rc)
 
@@ -374,7 +385,7 @@ contains
 
   end function med_map_RH_is_created_RH3d
 
-!================================================================================                   
+!================================================================================
 
   logical function med_map_RH_is_created_RH1d(RHs,mapindex,rc)
 
@@ -415,7 +426,7 @@ contains
 
   end function med_map_RH_is_created_RH1d
 
-!================================================================================                   
+!================================================================================
 
   subroutine med_map_Fractions_init(gcomp, n1, n2, FBSrc, FBDst, RouteHandle, rc)
 
@@ -662,7 +673,7 @@ contains
     type(ESMF_Field)      :: frac_field_dst
     real(R8), allocatable :: data_srctmp(:)
     real(R8), allocatable :: data_srctmp_1d(:)
-    real(R8), allocatable :: data_srctmp_2d(:,:)  
+    real(R8), allocatable :: data_srctmp_2d(:,:)
     real(R8), pointer     :: data_src_1d(:)
     real(R8), pointer     :: data_src_2d(:,:)
     real(R8), pointer     :: data_frac(:)
@@ -880,7 +891,7 @@ contains
              if (lrank == 1) then
                 data_src_1d(:) = data_srctmp_1d(:)
              elseif (lrank == 2) then
-                data_src_2d(:,:) = data_srctmp_2d(:,:) 
+                data_src_2d(:,:) = data_srctmp_2d(:,:)
              end if
 
              ! regrid fraction from source to dest
