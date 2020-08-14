@@ -924,7 +924,7 @@ contains
        else
           if ( fldchk(is_local%wrap%FBExp(compocn)        , trim(fldname), rc=rc) .and. &
                fldchk(is_local%wrap%FBImp(compatm,compatm), trim(fldname), rc=rc)) then
-             call addmap(fldListFr(compatm)%flds, trim(fldname), compocn, mapconsf, 'one', atm2ocn_fmap)
+             call addmap(fldListFr(compatm)%flds, trim(fldname), compocn, mapcons2nd, 'one', atm2ocn_fmap)
              call addmrg(fldListTo(compocn)%flds, trim(fldname), mrg_from1=compatm, mrg_fld1=trim(fldname), &
                   mrg_type1='copy_with_weights', mrg_fracname1='ofrac')
           end if
@@ -958,7 +958,7 @@ contains
        if ( fldchk(is_local%wrap%FBExp(compocn)        , 'Foxx_lwnet', rc=rc) .and. &
             fldchk(is_local%wrap%FBMed_aoflux_o        , 'Faox_lwup' , rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_lwdn' , rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_lwdn', compocn, mapconsf, 'one'  , atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_lwdn', compocn, mapcons2nd, 'one'  , atm2ocn_fmap)
           call addmrg(fldListTo(compocn)%flds, 'Foxx_lwnet', &
                mrg_from1=compmed, mrg_fld1='Faox_lwup', mrg_type1='merge', mrg_fracname1='ofrac', &
                mrg_from2=compatm, mrg_fld2='Faxa_lwdn', mrg_type2='merge', mrg_fracname2='ofrac')
@@ -974,7 +974,7 @@ contains
     else
        if (fldchk(is_local%wrap%FBImp(compatm, compatm), 'Faxa_swdn', rc=rc) .and. &
            fldchk(is_local%wrap%FBExp(compocn)         , 'Faxa_swdn', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swdn', compocn, mapconsf, 'one', atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swdn', compocn, mapcons2nd, 'one', atm2ocn_fmap)
           call addmrg(fldListTo(compocn)%flds, 'Faxa_swdn', &
                mrg_from1=compatm, mrg_fld1='Faxa_swdn', mrg_type1='copy')
        end if
@@ -1029,10 +1029,10 @@ contains
              fldchk(is_local%wrap%FBExp(compocn), 'Foxx_swnet_vdf', rc=rc) .and. &
              fldchk(is_local%wrap%FBExp(compocn), 'Foxx_swnet_idr', rc=rc) .and. &
              fldchk(is_local%wrap%FBExp(compocn), 'Foxx_swnet_idf', rc=rc))) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swvdr', compocn, mapconsf, 'one', atm2ocn_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swvdf', compocn, mapconsf, 'one', atm2ocn_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swndr', compocn, mapconsf, 'one', atm2ocn_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swndf', compocn, mapconsf, 'one', atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swvdr', compocn, mapcons2nd, 'one', atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swvdf', compocn, mapcons2nd, 'one', atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swndr', compocn, mapcons2nd, 'one', atm2ocn_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swndf', compocn, mapcons2nd, 'one', atm2ocn_fmap)
        end if
     end if
 
@@ -1798,11 +1798,11 @@ contains
        call addfld(fldListFr(complnd)%flds, 'Flgl_qice_elev') ! glacier ice flux               (1->glc_nec+1)
     else
        if ( fldchk(is_local%wrap%FBImp(complnd,complnd) , 'Flgl_qice_elev', rc=rc)) then
-          ! custom merging will be done here 
+          ! custom merging will be done here
           call addmap(FldListFr(complnd)%flds, 'Flgl_qice_elev', compglc, mapbilnr, 'lfrac', lnd2glc_smap)
        end if
        if ( fldchk(is_local%wrap%FBImp(complnd,complnd) , 'Sl_tsrf_elev'  , rc=rc)) then
-          ! custom merging will be done here 
+          ! custom merging will be done here
           call addmap(FldListFr(complnd)%flds, 'Sl_tsrf_elev', compglc, mapbilnr, 'lfrac', lnd2glc_smap)
        end if
        if ( fldchk(is_local%wrap%FBImp(complnd,complnd) , 'Sl_topo_elev'  , rc=rc)) then
