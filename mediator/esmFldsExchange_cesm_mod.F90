@@ -32,7 +32,7 @@ contains
     use esmFlds               , only : addmrg => med_fldList_AddMrg
     use esmflds               , only : compmed, compatm, complnd, compocn
     use esmflds               , only : compice, comprof, compwav, compglc, ncomps
-    use esmflds               , only : mapbilnr, mapconsf, mapconsd, mappatch
+    use esmflds               , only : mapbilnr, mapconsf, mapconsd, mappatch, mapcons2nd
     use esmflds               , only : mapfcopy, mapnstod, mapnstod_consd, mapnstod_consf
     use esmflds               , only : mapuv_with_cart3d
     use esmflds               , only : fldListTo, fldListFr, fldListMed_aoflux, fldListMed_ocnalb
