@@ -100,6 +100,7 @@ contains
     use ESMF  , only : ESMF_UNMAPPEDACTION_IGNORE, ESMF_REGRIDMETHOD_CONSERVE, ESMF_NORMTYPE_FRACAREA
     use ESMF  , only : ESMF_REGRIDMETHOD_NEAREST_STOD, ESMF_REGRIDMETHOD_CONSERVE_2ND
     use ESMF  , only : ESMF_NORMTYPE_DSTAREA, ESMF_REGRIDMETHOD_PATCH, ESMF_RouteHandlePrint
+    use ESMF  , only : ESMF_POLEMETHOD_NONE
     use NUOPC , only : NUOPC_Write
 
     ! input/output variables
@@ -305,7 +306,7 @@ contains
                                  srcMaskValues=(/srcMaskValue/), &
                                  dstMaskValues=(/dstMaskValue/), &
                                  regridmethod=ESMF_REGRIDMETHOD_CONSERVE_2ND, &
-                                 polemethod=polemethod, &
+                                 polemethod=ESMF_POLEMETHOD_NONE, &
                                  srcTermProcessing=srcTermProcessing_Value, &
                                  factorList=factorList, &
                                  ignoreDegenerate=.true., &
