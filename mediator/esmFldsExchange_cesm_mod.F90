@@ -397,7 +397,7 @@ contains
        call addfld(fldListFr(compatm)%flds, 'Faxa_swnet')
     else
        if (fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_swnet', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_swnet', compice, mappatch, 'one'  , atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_swnet', compice, mapconsf, 'one'  , atm2ice_fmap)
           call addmap(fldListFr(compatm)%flds, 'Faxa_swnet', compocn, mappatch, 'one'  , atm2ocn_fmap)
        end if
        if (fldchk(is_local%wrap%FBImp(compice,compice), 'Faii_swnet', rc=rc)) then
@@ -1464,7 +1464,7 @@ contains
        else
           if ( fldchk(is_local%wrap%FBExp(compice)        , trim(fldname), rc=rc) .and. &
                fldchk(is_local%wrap%FBImp(compatm,compatm), trim(fldname), rc=rc)) then
-             call addmap(fldListFr(compatm)%flds, trim(fldname), compice, mappatch, 'one', atm2ice_fmap)
+             call addmap(fldListFr(compatm)%flds, trim(fldname), compice, mapcons2nd, 'one', atm2ice_fmap)
              call addmrg(fldListTo(compice)%flds, trim(fldname), &
                   mrg_from1=compatm, mrg_fld1=trim(fldname), mrg_type1='copy')
           end if
@@ -1490,26 +1490,26 @@ contains
        if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_rain' , rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rainl', rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rainc', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rainc', compice, mappatch, 'one', atm2ice_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rainl', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rainc', compice, mapconsf, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rainl', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_rain' , &
                mrg_from1=compatm, mrg_fld1='Faxa_rainc:Faxa_rainl', mrg_type1='sum')
        else if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_rain', rc=rc) .and. &
                  fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rain', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rain', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rain', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_rain', &
                mrg_from1=compatm, mrg_fld1='Faxa_rain', mrg_type1='copy')
        end if
        if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_rain_wiso' , rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rainl_wiso', rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rainc_wiso', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rainc_wiso', compice, mappatch, 'one', atm2ice_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rainl_wiso', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rainc_wiso', compice, mapconsf, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rainl_wiso', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_rain_wiso' , &
                mrg_from1=compatm, mrg_fld1='Faxa_rainc_wiso:Faxa_rainl_wiso', mrg_type1='sum')
        else if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_rain_wiso', rc=rc) .and. &
                  fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_rain_wiso', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_rain_wiso', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_rain_wiso', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_rain_wiso', &
                mrg_from1=compatm, mrg_fld1='Faxa_rain_wiso', mrg_type1='copy')
        end if
@@ -1529,26 +1529,26 @@ contains
        if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_snow' , rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snowl', rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snowc', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snowc', compice, mappatch, 'one', atm2ice_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snowl', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snowc', compice, mapconsf, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snowl', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_snow' , &
                mrg_from1=compatm, mrg_fld1='Faxa_snowc:Faxa_snowl', mrg_type1='sum')
        else if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_snow', rc=rc) .and. &
                  fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snow', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snow', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snow', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_snow', &
                mrg_from1=compatm, mrg_fld1='Faxa_snow', mrg_type1='copy')
        end if
        if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_snow_wiso', rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snowl_wiso', rc=rc) .and. &
             fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snowc_wiso', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snowc_wiso', compice, mappatch, 'one', atm2ice_fmap)
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snowl_wiso', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snowc_wiso', compice, mapconsf, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snowl_wiso', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_snow_wiso' , &
                mrg_from1=compatm, mrg_fld1='Faxa_snowc_wiso:Faxa_snowl_wiso', mrg_type1='sum')
        else if ( fldchk(is_local%wrap%FBexp(compice)        , 'Faxa_snow_wiso', rc=rc) .and. &
                  fldchk(is_local%wrap%FBImp(compatm,compatm), 'Faxa_snow_wiso', rc=rc)) then
-          call addmap(fldListFr(compatm)%flds, 'Faxa_snow_wiso', compice, mappatch, 'one', atm2ice_fmap)
+          call addmap(fldListFr(compatm)%flds, 'Faxa_snow_wiso', compice, mapconsf, 'one', atm2ice_fmap)
           call addmrg(fldListTo(compice)%flds, 'Faxa_snow_wiso', &
                mrg_from1=compatm, mrg_fld1='Faxa_snow_wiso', mrg_type1='copy')
        end if
@@ -1580,7 +1580,7 @@ contains
              if (trim(fldname) == 'Sa_u' .or. trim(fldname) == 'Sa_v') then
                 call addmap(fldListFr(compatm)%flds, trim(fldname), compice, mappatch, 'one', atm2ice_vmap)
              else
-                call addmap(fldListFr(compatm)%flds, trim(fldname), compice, mappatch, 'one', atm2ice_smap)
+                call addmap(fldListFr(compatm)%flds, trim(fldname), compice, mapbilnr, 'one', atm2ice_smap)
              end if
              call addmrg(fldListTo(compice)%flds, trim(fldname), &
                   mrg_from1=compatm, mrg_fld1=trim(fldname), mrg_type1='copy')
